@@ -70,4 +70,20 @@ int main() {
  {
  while ((dp = readdir(dirp)) != NULL) { // Iterate over all files in the directory
  string filename(dp->d_name);
- if (filename != "." && filename !=
+ if (filename != "." && filename != = "..") { // Skip current directory and parent directory
+entries
+ string npath = path + filename;
+ #pragma omp task
+ {
+ cout << "Total Count is " + to_string(display(npath, word_to_search)) <<
+ " from file " + filename << endl;
+ }
+ }
+ }
+ }
+ }
+ closedir(dirp); // Close the directory
+ time = omp_get_wtime() - time;
+ cout << "Time is " + to_string(time);
+ return 0;
+}
