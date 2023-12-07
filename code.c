@@ -36,3 +36,38 @@ int find_all(string sen, string word) {
 }
  start += 1;
  endword += 1;
+return count; }
+int display(string path, string word_to_search) {
+ int totalCount = 0;
+ string line;
+ int count = 1;
+ ifstream myfile(path);
+ if (myfile.is_open()) {
+ while (getline(myfile, line)) {
+ totalCount += find_all(line, word_to_search);
+ count++;
+
+}
+
+}
+ else {
+ cout << "File not open\n" << endl;
+
+}
+ return totalCount; }
+int main() {
+ string homeDir = getenv("HOME"); // Get the home directory
+ string path = homeDir + "/pdc_files/"; // Path to the directory containing the text files
+ string word_to_search = "";
+ cout << "Enter a word to search: ";
+ cin >> word_to_search;
+ double time = omp_get_wtime();
+ DIR* dirp = opendir(path.c_str()); // Open the directory
+ struct dirent *dp;
+ #pragma omp parallel shared(dirp) private(dp)
+ {
+ #pragma omp single
+ {
+ while ((dp = readdir(dirp)) != NULL) { // Iterate over all files in the directory
+ string filename(dp->d_name);
+ if (filename != "." && filename !=
